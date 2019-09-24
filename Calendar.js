@@ -37,6 +37,7 @@ class Calendar {
     this.container.appendChild(this.pointer);
     this.events = null;
     this.map = null;
+    this.colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
     window.setInterval(() => this.updatePointer, 60000);
     window.addEventListener("resize", () => this.print());
     window.addEventListener("resize", () => this.updatePointer());
@@ -151,21 +152,31 @@ class Calendar {
    *   in the format: [{name:colName, events:[]}, ...]
    * @param {String[]?} colors - ordered list of CSS colors for the columns
    */
-  print(events, map, colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet",]) {
+  print(events, map, colors) {
     if (events) {
       this.events = events;
     } else if (this.events) {
       events = this.events;
     } else {
-      throw new Error("Calendar.print(events, map): events not found");
+      throw new Error("Calendar.print: events undefined");
     }
+
     if (map) {
       this.map = map;
     } else if (this.map) {
       map = this.map;
     } else {
-      throw new Error("Calendar.print(events, map): map not found");
+      throw new Error("Calendar.print: map undefined");
     }
+
+    if (colors) {
+      this.colors = colors;
+    } else if (this.colors) {
+      colors = this.colors;
+    } else {
+      throw new Error("Calendar.print: colors undefined");
+    }
+
     // build a list of columns
     const columns = map(events);
     const columnNames = columns.map(col => col.name);
